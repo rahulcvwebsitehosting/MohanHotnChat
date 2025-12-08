@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from './Button';
 import { Calendar, Users, Send, CheckCircle } from 'lucide-react';
+import { CONTACT_INFO } from '../constants';
 
 const BulkOrderForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -16,13 +17,25 @@ const BulkOrderForm: React.FC = () => {
     e.preventDefault();
     setStatus('submitting');
     
-    // Simulate API call
+    // Construct the WhatsApp message
+    const message = `*New Bulk Order Request* 🎉%0A%0A` +
+      `👤 *Name:* ${formData.name}%0A` +
+      `📞 *Phone:* ${formData.phone}%0A` +
+      `📅 *Date:* ${formData.date}%0A` +
+      `👥 *Guests:* ${formData.guests}%0A` +
+      `📝 *Details:* ${formData.details || 'No specific details provided'}`;
+
+    // Open WhatsApp
+    window.open(`https://wa.me/91${CONTACT_INFO.phone}?text=${message}`, '_blank');
+
+    // Show success state on UI
+    setStatus('success');
+    
+    // Reset form after a delay
     setTimeout(() => {
-      setStatus('success');
-      // Reset form after 3 seconds
-      setTimeout(() => setStatus('idle'), 3000);
+      setStatus('idle');
       setFormData({ name: '', phone: '', date: '', guests: '50-100', details: '' });
-    }, 1500);
+    }, 3000);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -36,8 +49,8 @@ const BulkOrderForm: React.FC = () => {
           <div className="bg-green-500/20 p-6 rounded-full mb-6 animate-bounce">
             <CheckCircle size={48} className="text-secondary" />
           </div>
-          <h3 className="text-2xl font-bold text-white mb-2">Request Received!</h3>
-          <p className="text-gray-400 text-center max-w-xs">We will call you shortly to discuss your party menu.</p>
+          <h3 className="text-2xl font-bold text-white mb-2">Redirecting to WhatsApp...</h3>
+          <p className="text-gray-400 text-center max-w-xs">Please hit send in WhatsApp to complete your request.</p>
         </div>
       ) : null}
 
@@ -125,7 +138,7 @@ const BulkOrderForm: React.FC = () => {
           disabled={status === 'submitting'}
           icon={status === 'submitting' ? null : <Send size={18} />}
         >
-          {status === 'submitting' ? 'Sending...' : 'Request Callback'}
+          {status === 'submitting' ? 'Processing...' : 'Send Request via WhatsApp'}
         </Button>
       </form>
     </div>
