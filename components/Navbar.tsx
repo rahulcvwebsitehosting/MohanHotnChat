@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone, MapPin } from 'lucide-react';
+import { Menu, X, Phone, MapPin, ShoppingBag } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const { cartCount, setIsCartOpen } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,7 +39,7 @@ const Navbar: React.FC = () => {
         <div className="flex items-center justify-between h-20">
           
           {/* Logo */}
-          <Link to="/" className="flex flex-col">
+          <Link to="/" className="flex flex-col z-50">
             <span className="text-2xl font-bold font-heading tracking-wider text-white">
               MOHAN'S <span className="text-primary">HOT & CHAT</span>
             </span>
@@ -71,16 +73,31 @@ const Navbar: React.FC = () => {
             <Link to="/location" className="text-gray-300 hover:text-primary transition-colors">
               <MapPin size={20} />
             </Link>
-            <Link to="/menu" className="bg-primary hover:bg-orange-600 text-white px-4 py-2 rounded-full text-sm font-bold transition-all shadow-lg hover:shadow-orange-500/30">
-              Order Now
-            </Link>
+            <button 
+              onClick={() => setIsCartOpen(true)}
+              className="bg-primary hover:bg-orange-600 text-white px-4 py-2 rounded-full text-sm font-bold transition-all shadow-lg hover:shadow-orange-500/30 flex items-center gap-2"
+            >
+              <ShoppingBag size={18} />
+              <span>Cart ({cartCount})</span>
+            </button>
           </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
+          {/* Mobile Cart & Menu */}
+          <div className="md:hidden flex items-center gap-4">
+            <button 
+              onClick={() => setIsCartOpen(true)}
+              className="relative text-white p-2"
+            >
+              <ShoppingBag size={24} />
+              {cartCount > 0 && (
+                <span className="absolute top-0 right-0 bg-primary text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-black">
+                  {cartCount}
+                </span>
+              )}
+            </button>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-white/10 focus:outline-none"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-white/10 focus:outline-none z-50"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -90,11 +107,12 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu Overlay */}
       {isOpen && (
-        <div className="md:hidden bg-black/95 backdrop-blur-xl h-screen absolute top-0 left-0 w-full z-40 flex flex-col pt-24 px-6 space-y-6">
+        <div className="md:hidden bg-black/95 backdrop-blur-xl h-screen fixed top-0 left-0 w-full z-40 flex flex-col pt-24 px-6 space-y-6">
           {navLinks.map((link) => (
             <Link
               key={link.name}
               to={link.path}
+              onClick={() => setIsOpen(false)}
               className={`text-2xl font-bold ${
                 location.pathname === link.path ? 'text-primary' : 'text-white'
               }`}
@@ -107,7 +125,7 @@ const Navbar: React.FC = () => {
               <Phone size={20} />
               <span>Call</span>
             </a>
-            <Link to="/location" className="flex items-center justify-center space-x-2 bg-gray-800 p-4 rounded-lg text-white">
+            <Link to="/location" className="flex items-center justify-center space-x-2 bg-gray-800 p-4 rounded-lg text-white" onClick={() => setIsOpen(false)}>
               <MapPin size={20} />
               <span>Map</span>
             </Link>

@@ -7,8 +7,10 @@ import MenuSection from './components/MenuSection';
 import Reviews from './components/Reviews';
 import Gallery from './components/Gallery';
 import BulkOrderForm from './components/BulkOrderForm';
+import CartSidebar from './components/CartSidebar';
 import { CONTACT_INFO } from './constants';
 import { MapPin, Clock, Phone } from 'lucide-react';
+import { CartProvider } from './context/CartContext';
 
 // Scroll to top on route change
 const ScrollToTop = () => {
@@ -98,36 +100,41 @@ const LocationPage = () => (
 
 const App: React.FC = () => {
   return (
-    <div className="flex flex-col min-h-screen bg-black text-white selection:bg-primary selection:text-white">
-      <ScrollToTop />
-      <Navbar />
-      <main className="flex-grow">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/menu" element={<div className="pt-24"><MenuSection /></div>} />
-          <Route path="/location" element={<LocationPage />} />
-          <Route path="/gallery" element={<div className="pt-24"><Gallery /></div>} />
-          <Route path="/bulk-order" element={
-            <div className="pt-32 pb-20 max-w-4xl mx-auto px-4">
-               <BulkOrderForm />
-            </div>
-          } />
-          {/* Catch-all route to redirect any unknown paths to Home */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </main>
-      <Footer />
-      
-      {/* Sticky Mobile CTA */}
-      <div className="fixed bottom-4 left-4 right-4 z-40 md:hidden grid grid-cols-2 gap-3">
-        <a href={`https://wa.me/91${CONTACT_INFO.phone}`} className="bg-green-600 text-white font-bold py-3 rounded-lg flex items-center justify-center shadow-lg">
-          WhatsApp
-        </a>
-        <a href={`tel:+91${CONTACT_INFO.phone}`} className="bg-primary text-white font-bold py-3 rounded-lg flex items-center justify-center shadow-lg">
-          Call Now
-        </a>
+    <CartProvider>
+      <div className="flex flex-col min-h-screen bg-black text-white selection:bg-primary selection:text-white">
+        <ScrollToTop />
+        <Navbar />
+        <CartSidebar />
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/menu" element={<div className="pt-24"><MenuSection /></div>} />
+            <Route path="/location" element={<LocationPage />} />
+            <Route path="/gallery" element={<div className="pt-24"><Gallery /></div>} />
+            <Route path="/bulk-order" element={
+              <div className="pt-32 pb-20 max-w-4xl mx-auto px-4">
+                 <BulkOrderForm />
+              </div>
+            } />
+            {/* Catch-all route to redirect any unknown paths to Home */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+        <Footer />
+        
+        {/* Sticky Mobile CTA - Show only if not cart open? Or keep simple links? */}
+        <div className="fixed bottom-4 left-4 right-4 z-40 md:hidden grid grid-cols-2 gap-3 pointer-events-none">
+           {/* We use pointer-events-none wrapper so clicks go through to elements behind if gap is clicked, 
+               but enable pointer-events on the buttons themselves */}
+          <a href={`https://wa.me/91${CONTACT_INFO.phone}`} className="pointer-events-auto bg-green-600 text-white font-bold py-3 rounded-lg flex items-center justify-center shadow-lg">
+            WhatsApp
+          </a>
+          <a href={`tel:+91${CONTACT_INFO.phone}`} className="pointer-events-auto bg-primary text-white font-bold py-3 rounded-lg flex items-center justify-center shadow-lg">
+            Call Now
+          </a>
+        </div>
       </div>
-    </div>
+    </CartProvider>
   );
 };
 

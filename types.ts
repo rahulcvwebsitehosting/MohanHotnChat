@@ -30,3 +30,19 @@ export interface Stats {
   value: string;
   icon: any;
 }
+
+export interface CartItem extends MenuItem {
+  quantity: number;
+}
+
+export interface CartContextType {
+  cart: CartItem[];
+  addToCart: (item: MenuItem) => void;
+  removeFromCart: (itemId: string) => void;
+  updateQuantity: (itemId: string, delta: number) => void;
+  clearCart: () => void;
+  cartTotal: number;
+  cartCount: number;
+  isCartOpen: boolean;
+  setIsCartOpen: (isOpen: boolean) => void;
+}
