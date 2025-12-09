@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { CATEGORIES, MENU_ITEMS } from '../constants';
-import { Search, Flame, Leaf, Drumstick, Plus, Minus } from 'lucide-react';
+import { MenuItem } from '../types';
+import { Search, Flame, Leaf, Drumstick, Plus, Minus, X, Info } from 'lucide-react';
 import { Button } from './Button';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
@@ -13,6 +14,7 @@ interface MenuSectionProps {
 const MenuSection: React.FC<MenuSectionProps> = ({ limit, showFilters = true }) => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const { addToCart, cart, updateQuantity } = useCart();
 
   const filteredItems = useMemo(() => {
@@ -40,8 +42,18 @@ const MenuSection: React.FC<MenuSectionProps> = ({ limit, showFilters = true }) 
     return cart.find(i => i.id === id)?.quantity || 0;
   };
 
+  const handleOpenModal = (item: MenuItem) => {
+    setSelectedItem(item);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const handleCloseModal = () => {
+    setSelectedItem(null);
+    document.body.style.overflow = 'unset';
+  };
+
   return (
-    <section className="py-20 bg-dark" id="menu-section">
+    <section className="py-20 bg-dark relative" id="menu-section">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {!limit && (
           <div className="text-center mb-16">
@@ -98,7 +110,8 @@ const MenuSection: React.FC<MenuSectionProps> = ({ limit, showFilters = true }) 
             return (
               <div 
                 key={item.id}
-                className="group bg-card rounded-2xl overflow-hidden border border-gray-800 hover:border-primary/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-orange-900/20 flex flex-col"
+                onClick={() => handleOpenModal(item)}
+                className="group bg-card rounded-2xl overflow-hidden border border-gray-800 hover:border-primary/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-orange-900/20 flex flex-col cursor-pointer"
               >
                 {/* Image Container */}
                 <div className="relative h-48 overflow-hidden">
@@ -126,6 +139,10 @@ const MenuSection: React.FC<MenuSectionProps> = ({ limit, showFilters = true }) 
                       </span>
                     )}
                   </div>
+
+                  <div className="absolute top-3 right-3 bg-black/50 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Info size={16} />
+                  </div>
                 </div>
 
                 {/* Content */}
@@ -137,30 +154,32 @@ const MenuSection: React.FC<MenuSectionProps> = ({ limit, showFilters = true }) 
                   </div>
                   <p className="text-gray-400 text-sm mb-4 line-clamp-2 min-h-[40px] flex-1">{item.description}</p>
                   
-                  {qty === 0 ? (
-                    <button 
-                      onClick={() => addToCart(item)}
-                      className="w-full py-2 flex items-center justify-center gap-2 border border-primary text-primary hover:bg-primary hover:text-white rounded-lg transition-colors font-semibold text-sm"
-                    >
-                      <Plus size={16} /> Add to Cart
-                    </button>
-                  ) : (
-                    <div className="flex items-center justify-between bg-black/40 rounded-lg p-1 border border-primary/30">
-                       <button 
-                         onClick={() => updateQuantity(item.id, -1)}
-                         className="p-2 hover:bg-white/10 rounded-md text-white transition-colors"
-                       >
-                         <Minus size={16} />
-                       </button>
-                       <span className="font-bold text-white">{qty}</span>
-                       <button 
-                         onClick={() => updateQuantity(item.id, 1)}
-                         className="p-2 hover:bg-white/10 rounded-md text-white transition-colors"
-                       >
-                         <Plus size={16} />
-                       </button>
-                    </div>
-                  )}
+                  <div onClick={(e) => e.stopPropagation()}>
+                    {qty === 0 ? (
+                      <button 
+                        onClick={() => addToCart(item)}
+                        className="w-full py-2 flex items-center justify-center gap-2 border border-primary text-primary hover:bg-primary hover:text-white rounded-lg transition-colors font-semibold text-sm"
+                      >
+                        <Plus size={16} /> Add to Cart
+                      </button>
+                    ) : (
+                      <div className="flex items-center justify-between bg-black/40 rounded-lg p-1 border border-primary/30">
+                         <button 
+                           onClick={() => updateQuantity(item.id, -1)}
+                           className="p-2 hover:bg-white/10 rounded-md text-white transition-colors"
+                         >
+                           <Minus size={16} />
+                         </button>
+                         <span className="font-bold text-white">{qty}</span>
+                         <button 
+                           onClick={() => updateQuantity(item.id, 1)}
+                           className="p-2 hover:bg-white/10 rounded-md text-white transition-colors"
+                         >
+                           <Plus size={16} />
+                         </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             );
@@ -185,6 +204,107 @@ const MenuSection: React.FC<MenuSectionProps> = ({ limit, showFilters = true }) 
           </div>
         )}
       </div>
+
+      {/* Item Detail Modal */}
+      {selectedItem && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={handleCloseModal}></div>
+          <div className="relative bg-neutral-900 w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl animate-fade-in border border-gray-800 flex flex-col max-h-[90vh]">
+            
+            {/* Modal Close Button */}
+            <button 
+              onClick={handleCloseModal}
+              className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full transition-colors backdrop-blur-md"
+            >
+              <X size={20} />
+            </button>
+
+            {/* Modal Image */}
+            <div className="h-64 w-full relative flex-shrink-0">
+               <img 
+                  src={selectedItem.image} 
+                  alt={selectedItem.name} 
+                  className="w-full h-full object-cover"
+                />
+               <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-neutral-900 to-transparent"></div>
+               <div className="absolute bottom-4 left-6">
+                 {selectedItem.isBestseller && (
+                    <span className="bg-yellow-500 text-black text-xs font-bold px-2 py-1 rounded-md inline-flex items-center gap-1 mb-2">
+                      <Flame size={12} fill="currentColor" /> Bestseller
+                    </span>
+                  )}
+                 <h2 className="text-3xl font-bold text-white font-heading">{selectedItem.name}</h2>
+               </div>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 overflow-y-auto">
+               <div className="flex items-center gap-2 mb-4 text-sm">
+                  {selectedItem.veg ? (
+                    <span className="text-green-500 font-bold flex items-center gap-1"><Leaf size={14} /> Pure Veg</span>
+                  ) : (
+                    <span className="text-red-500 font-bold flex items-center gap-1"><Drumstick size={14} /> Non-Veg</span>
+                  )}
+                  {selectedItem.isSpicy && (
+                    <span className="text-orange-500 font-bold flex items-center gap-1">• Spicy</span>
+                  )}
+                  <span className="text-gray-500">• {CATEGORIES.find(c => c.id === selectedItem.category)?.name}</span>
+               </div>
+
+               <p className="text-gray-300 leading-relaxed text-lg mb-6">
+                 {selectedItem.description}
+               </p>
+
+               {selectedItem.ingredients && selectedItem.ingredients.length > 0 && (
+                 <div className="mb-8">
+                   <h4 className="font-bold text-white mb-3 uppercase tracking-wider text-xs flex items-center gap-2">
+                     <span className="w-1 h-4 bg-primary rounded-full"></span> Key Ingredients
+                   </h4>
+                   <div className="flex flex-wrap gap-2">
+                     {selectedItem.ingredients.map((ing, idx) => (
+                       <span key={idx} className="bg-gray-800 border border-gray-700 text-gray-300 px-3 py-1.5 rounded-lg text-sm">
+                         {ing}
+                       </span>
+                     ))}
+                   </div>
+                 </div>
+               )}
+
+               <div className="bg-card rounded-xl p-4 border border-gray-800 flex items-center justify-between">
+                 <div>
+                    <span className="text-gray-400 text-sm block">Price</span>
+                    <span className="text-2xl font-bold text-primary">₹{selectedItem.price}</span>
+                 </div>
+                 
+                 <div className="w-1/2">
+                    {getItemQty(selectedItem.id) === 0 ? (
+                      <Button onClick={() => addToCart(selectedItem)} className="w-full">
+                        Add to Cart
+                      </Button>
+                    ) : (
+                      <div className="flex items-center justify-between bg-black rounded-lg p-1 border border-primary/30 h-12">
+                         <button 
+                           onClick={() => updateQuantity(selectedItem.id, -1)}
+                           className="w-10 h-full flex items-center justify-center hover:bg-white/10 rounded-md text-white transition-colors"
+                         >
+                           <Minus size={18} />
+                         </button>
+                         <span className="font-bold text-white text-lg">{getItemQty(selectedItem.id)}</span>
+                         <button 
+                           onClick={() => updateQuantity(selectedItem.id, 1)}
+                           className="w-10 h-full flex items-center justify-center hover:bg-white/10 rounded-md text-white transition-colors"
+                         >
+                           <Plus size={18} />
+                         </button>
+                      </div>
+                    )}
+                 </div>
+               </div>
+            </div>
+
+          </div>
+        </div>
+      )}
     </section>
   );
 };

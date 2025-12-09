@@ -8,6 +8,7 @@ export interface MenuItem {
   isBestseller?: boolean;
   isSpicy?: boolean;
   veg: boolean;
+  ingredients?: string[];
 }
 
 export interface Category {
