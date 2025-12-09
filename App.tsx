@@ -9,7 +9,7 @@ import Gallery from './components/Gallery';
 import BulkOrderForm from './components/BulkOrderForm';
 import CartSidebar from './components/CartSidebar';
 import { CONTACT_INFO } from './constants';
-import { MapPin, Clock, Phone } from 'lucide-react';
+import { MapPin, Clock, Phone, MessageCircle } from 'lucide-react';
 import { CartProvider } from './context/CartContext';
 
 // Scroll to top on route change
@@ -101,7 +101,7 @@ const LocationPage = () => (
 const App: React.FC = () => {
   return (
     <CartProvider>
-      <div className="flex flex-col min-h-screen bg-black text-white selection:bg-primary selection:text-white">
+      <div className="flex flex-col min-h-screen bg-black text-white selection:bg-primary selection:text-white pb-20 md:pb-0">
         <ScrollToTop />
         <Navbar />
         <CartSidebar />
@@ -122,15 +122,20 @@ const App: React.FC = () => {
         </main>
         <Footer />
         
-        {/* Sticky Mobile CTA - Show only if not cart open? Or keep simple links? */}
-        <div className="fixed bottom-4 left-4 right-4 z-40 md:hidden grid grid-cols-2 gap-3 pointer-events-none">
-           {/* We use pointer-events-none wrapper so clicks go through to elements behind if gap is clicked, 
-               but enable pointer-events on the buttons themselves */}
-          <a href={`https://wa.me/91${CONTACT_INFO.phone}`} className="pointer-events-auto bg-green-600 text-white font-bold py-3 rounded-lg flex items-center justify-center shadow-lg">
-            WhatsApp
+        {/* Sticky Mobile CTA - Slide Up Animation */}
+        <div className="fixed bottom-4 left-4 right-4 z-40 md:hidden grid grid-cols-2 gap-3 animate-slide-up">
+           {/* Wrapper to handle z-index correctly with cart overlay (cart is z-[70]) */}
+          <a 
+            href={`https://wa.me/91${CONTACT_INFO.phone}`} 
+            className="bg-green-600/90 backdrop-blur-md hover:bg-green-500 text-white font-bold py-3 rounded-xl flex items-center justify-center shadow-lg border border-green-500/30 transition-transform active:scale-95"
+          >
+            <MessageCircle size={18} className="mr-2" /> WhatsApp
           </a>
-          <a href={`tel:+91${CONTACT_INFO.phone}`} className="pointer-events-auto bg-primary text-white font-bold py-3 rounded-lg flex items-center justify-center shadow-lg">
-            Call Now
+          <a 
+            href={`tel:+91${CONTACT_INFO.phone}`} 
+            className="bg-primary/90 backdrop-blur-md hover:bg-orange-600 text-white font-bold py-3 rounded-xl flex items-center justify-center shadow-lg border border-orange-500/30 transition-transform active:scale-95"
+          >
+            <Phone size={18} className="mr-2" /> Call Now
           </a>
         </div>
       </div>

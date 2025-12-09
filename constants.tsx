@@ -16,59 +16,62 @@ export const CATEGORIES: Category[] = [
   { id: 'combos', name: 'Combos', icon: '🍱' },
 ];
 
-// Helper for consistent images - using verified Unsplash IDs
+// Single Template Image for ALL items as requested
+const TEMPLATE_IMAGE = 'https://images.unsplash.com/photo-1589301760576-47f40569e6e3?auto=format&fit=crop&q=80&w=800';
+
+// Helper for consistent images - ALL mapped to the template image
 const IMAGES = {
   // South Indian
-  idli: 'https://images.unsplash.com/photo-1589301760576-47f40569e6e3?auto=format&fit=crop&q=80&w=800', // Classic Idli
-  podiIdli: 'https://images.unsplash.com/photo-1589301760576-47f40569e6e3?auto=format&fit=crop&q=80&w=800', // Using Idli base
-  vada: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&q=80&w=800', // Medu Vada
-  rasamVada: 'https://images.unsplash.com/photo-1547592166-23acbe3a624b?auto=format&fit=crop&q=80&w=800', // Soup/Bowl style for Rasam Vada
-  sambarVada: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=800', // Bowl dish for Sambar Vada
-  dosa: 'https://images.unsplash.com/photo-1668236543090-d2f615552121?auto=format&fit=crop&q=80&w=800', // Dosa
-  pongal: 'https://images.unsplash.com/photo-1626049645585-b04047b8835c?auto=format&fit=crop&q=80&w=800', // Pongal
-  upma: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=800', // Upma
+  idli: TEMPLATE_IMAGE,
+  podiIdli: TEMPLATE_IMAGE,
+  vada: TEMPLATE_IMAGE,
+  rasamVada: TEMPLATE_IMAGE,
+  sambarVada: TEMPLATE_IMAGE,
+  dosa: TEMPLATE_IMAGE,
+  pongal: TEMPLATE_IMAGE,
+  upma: TEMPLATE_IMAGE,
   
   // Rice
-  rice: 'https://images.unsplash.com/photo-1596561234919-63a9603f2603?auto=format&fit=crop&q=80&w=800', // Rice/Curry
-  biryani: 'https://images.unsplash.com/photo-1633945274405-b6c8069047b0?auto=format&fit=crop&q=80&w=800', // Biryani
-  curdRice: 'https://images.unsplash.com/photo-1596561234919-63a9603f2603?auto=format&fit=crop&q=80&w=800', // Creamy rice
+  rice: TEMPLATE_IMAGE,
+  biryani: TEMPLATE_IMAGE,
+  curdRice: TEMPLATE_IMAGE,
 
   // Chaat
-  paniPuri: 'https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?auto=format&fit=crop&q=80&w=800', // Pani Puri
-  chaat: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&q=80&w=800', // General Chaat
-  bhel: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&q=80&w=800', // Bhel Puri
-  samosa: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&q=80&w=800', // Samosa
-  pavBhaji: 'https://images.unsplash.com/photo-1606491956689-2ea28c674675?auto=format&fit=crop&q=80&w=800', // Pav Bhaji
+  paniPuri: TEMPLATE_IMAGE,
+  chaat: TEMPLATE_IMAGE,
+  bhel: TEMPLATE_IMAGE,
+  samosa: TEMPLATE_IMAGE,
+  pavBhaji: TEMPLATE_IMAGE,
 
   // Chinese
-  chinese: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&q=80&w=800', // Noodles
-  friedRice: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&q=80&w=800', // Fried Rice
-  manchurian: 'https://images.unsplash.com/photo-1625938145744-e38051539994?auto=format&fit=crop&q=80&w=800', // Manchurian
-  paneer: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&q=80&w=800', // Paneer
-  soup: 'https://images.unsplash.com/photo-1547592166-23acbe3a624b?auto=format&fit=crop&q=80&w=800', // Soup
+  chinese: TEMPLATE_IMAGE,
+  friedRice: TEMPLATE_IMAGE,
+  manchurian: TEMPLATE_IMAGE,
+  paneer: TEMPLATE_IMAGE,
+  soup: TEMPLATE_IMAGE,
   
   // North Indian
-  northIndian: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?auto=format&fit=crop&q=80&w=800', // Roti/Naan
-  butterChicken: 'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?auto=format&fit=crop&q=80&w=800', // Butter Chicken
-  chole: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&q=80&w=800', // Chole
+  northIndian: TEMPLATE_IMAGE,
+  butterChicken: TEMPLATE_IMAGE,
+  chole: TEMPLATE_IMAGE,
   
   // Rolls
-  rolls: 'https://images.unsplash.com/photo-1534352956036-c01ac4439d5e?auto=format&fit=crop&q=80&w=800', // Rolls
+  rolls: TEMPLATE_IMAGE,
   
   // Beverages
-  beverage: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&q=80&w=800', // Generic Drink
-  roseMilk: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&q=80&w=800', // Pink Drink
-  badamMilk: 'https://images.unsplash.com/photo-1576442436217-2c1b72e50c77?auto=format&fit=crop&q=80&w=800', // Yellow Drink
-  coffee: 'https://images.unsplash.com/photo-1596952954288-29474ba77ac9?auto=format&fit=crop&q=80&w=800', // Filter Coffee
-  tea: 'https://images.unsplash.com/photo-1561336313-0bd5e0b27ec8?auto=format&fit=crop&q=80&w=800', // Chai
-  milkshake: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&q=80&w=800', // Shake
+  beverage: TEMPLATE_IMAGE,
+  roseMilk: TEMPLATE_IMAGE,
+  badamMilk: TEMPLATE_IMAGE,
+  coffee: TEMPLATE_IMAGE,
+  tea: TEMPLATE_IMAGE,
+  milkshake: TEMPLATE_IMAGE,
   
   // Desserts
-  dessert: 'https://images.unsplash.com/photo-1589119908995-c6837fa14848?auto=format&fit=crop&q=80&w=800', // Gulab Jamun/Sweet
-  iceCream: 'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?auto=format&fit=crop&q=80&w=800', // Ice Cream
+  dessert: TEMPLATE_IMAGE,
+  iceCream: TEMPLATE_IMAGE,
   
   // Combo
-  combo: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=800', // Thali Style
+  combo: TEMPLATE_IMAGE,
 };
 
 export const MENU_ITEMS: MenuItem[] = [

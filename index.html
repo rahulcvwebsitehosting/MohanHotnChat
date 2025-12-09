@@ -23,6 +23,18 @@
             },
             animation: {
               'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'slide-up': 'slideUp 0.5s ease-out forwards',
+              'fade-in': 'fadeIn 0.3s ease-out forwards',
+            },
+            keyframes: {
+              slideUp: {
+                '0%': { transform: 'translateY(100%)', opacity: '0' },
+                '100%': { transform: 'translateY(0)', opacity: '1' },
+              },
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              }
             }
           }
         }
@@ -64,7 +76,7 @@
         scrollbar-width: none;
       }
     </style>
-<script type="importmap">
+  <script type="importmap">
 {
   "imports": {
     "react": "https://aistudiocdn.com/react@^19.2.1",

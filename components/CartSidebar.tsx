@@ -12,15 +12,14 @@ const CartSidebar: React.FC = () => {
   const handleCheckout = () => {
     if (cart.length === 0) return;
 
-    let message = "Hi Mohan's Hot & Chat! I'd like to place an order:%0A%0A";
-    
-    cart.forEach(item => {
-      message += `• ${item.quantity} x ${item.name}%0A`;
-    });
-    
-    message += `%0A%0APlease confirm prices and availability.`;
+    // Construct a clean message string
+    const itemsList = cart.map(item => `• ${item.quantity} x ${item.name}`).join('\n');
+    const messageText = `Hi Mohan's Hot & Chat! I'd like to place an order:\n\n${itemsList}\n\nPlease confirm prices and availability.`;
 
-    window.open(`https://wa.me/91${CONTACT_INFO.phone}?text=${message}`, '_blank');
+    // Properly encode the message for URL
+    const encodedMessage = encodeURIComponent(messageText);
+    
+    window.open(`https://wa.me/91${CONTACT_INFO.phone}?text=${encodedMessage}`, '_blank');
   };
 
   return (
@@ -32,7 +31,7 @@ const CartSidebar: React.FC = () => {
       ></div>
 
       {/* Sidebar */}
-      <div className="fixed top-0 right-0 h-full w-full max-w-md bg-neutral-900 border-l border-neutral-800 shadow-2xl z-[70] transform transition-transform duration-300 flex flex-col">
+      <div className="fixed top-0 right-0 h-full w-full max-w-md bg-neutral-900 border-l border-neutral-800 shadow-2xl z-[70] transform transition-transform duration-300 flex flex-col animate-fade-in">
         {/* Header */}
         <div className="p-5 border-b border-neutral-800 flex justify-between items-center bg-neutral-900">
           <h2 className="text-xl font-bold text-white flex items-center gap-2">
@@ -119,7 +118,7 @@ const CartSidebar: React.FC = () => {
                 className="w-full justify-center"
                 onClick={handleCheckout}
               >
-                Request Prices via WhatsApp
+                Request Prices
               </Button>
             </div>
           </div>

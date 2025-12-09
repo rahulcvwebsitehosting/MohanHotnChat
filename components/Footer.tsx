@@ -4,6 +4,8 @@ import { Facebook, Instagram, Twitter, Clock, MapPin, Phone } from 'lucide-react
 import { CONTACT_INFO } from '../constants';
 
 const Footer: React.FC = () => {
+  const SOCIAL_LINK = "https://www.linkedin.com/in/rahulshyamcivil/";
+
   return (
     <footer className="bg-neutral-900 border-t border-neutral-800 pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -18,9 +20,9 @@ const Footer: React.FC = () => {
               West Mambalam's favorite late-night spot for authentic South Indian snacks and refreshing chaat items. Served hot, served fresh, served with love.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors"><Instagram size={20} /></a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors"><Facebook size={20} /></a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors"><Twitter size={20} /></a>
+              <a href={SOCIAL_LINK} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors"><Instagram size={20} /></a>
+              <a href={SOCIAL_LINK} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors"><Facebook size={20} /></a>
+              <a href={SOCIAL_LINK} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors"><Twitter size={20} /></a>
             </div>
           </div>
 
